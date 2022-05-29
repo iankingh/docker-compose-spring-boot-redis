@@ -10,6 +10,7 @@
 	<groupId>com.ian</groupId>
 	<artifactId>spring-boot-redis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>spring-boot-redis</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
