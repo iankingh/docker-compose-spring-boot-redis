@@ -1,0 +1,27 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: springboot-docker
+  #單個redis配置
+  redis:
+    #Redis伺服器地址
+    host: redis-16259.c99.us-east-1-4.ec2.cloud.redislabs.com
+    #Redis伺服器連線埠
+    port: 16259
+    #Redis伺服器連線密碼（預設為空）
+    password: MXKJODz6SN5UM73LSYHpqT2TMafiHOPV
+    # Redis資料庫索引（預設為0）
+    database: 0
+    lettuce:
+      pool:
+        # 連線池最大連線數（使用負值表示沒有限制） 預設 8
+        max-active: 32
+        # 連線池最大阻塞等待時間（使用負值表示沒有限制） 預設 -1
+        max-wait: -1
+        # 連線池中的最大空閒連線 預設 8
+        max-idle: 8
+        # 連線池中的最小空閒連線 預設 0
+        min-idle: 0
+        # 連線超時時間（毫秒）
+        timeout: 0
