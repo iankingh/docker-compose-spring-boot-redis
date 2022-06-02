@@ -11,8 +11,13 @@ services:
     environment:
       - TZ= Asia/Shanghai
       - SPRING_PROFILES_ACTIVE=dev
+    links:
+     - redis
   redis:
-    image: "redis:alpine"
+    image: redis
+    ports:
+    - "6379:6379"
+    
 
     
 

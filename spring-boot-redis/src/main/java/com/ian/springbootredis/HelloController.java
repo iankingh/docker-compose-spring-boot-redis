@@ -18,7 +18,8 @@ public class HelloController {
         int i = 0;
         Object s = redisTemplate.opsForValue().get("hello");
         if (s == null) {
-            redisTemplate.opsForValue().set("hello", String.valueOf("1"));
+            i = 1;
+            redisTemplate.opsForValue().set("hello", i);
         } else {
             i = Integer.valueOf(s.toString());
             i++;
