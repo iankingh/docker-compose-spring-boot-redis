@@ -2,6 +2,7 @@ package com.ian.springbootredis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,45 +11,48 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @GetMapping("/hello")
     public String hello() {
-
-        int i = 0;
         Object s = redisTemplate.opsForValue().get("hello");
-        if (s == null) {
-            i = 1;
-            redisTemplate.opsForValue().set("hello", i);
-        } else {
-            i = Integer.valueOf(s.toString());
-            i++;
-        }
+        int i = (s == null) ? 1 : Integer.parseInt(s.toString()) + 1;
         redisTemplate.opsForValue().set("hello", String.valueOf(i));
         return "Hello World! I have been seen : " + i + " times";
     }
 
-    @GetMapping("/redis/{value}")
-    public String setRedis(@PathVariable(value = "value") String value) {
+    // Set the fixed "data" key: GET /redis/set/{value}
+    @GetMapping("/redis/set/{value}")
+    public String setRedis(@PathVariable String value) {
         redisTemplate.opsForValue().set("data", value);
         return "set OK !";
     }
 
-    @GetMapping("/redis")
-    public String getRedis() {
-        return redisTemplate.opsForValue().get("data").toString();
+    // Get the fixed "data" key: GET /redis/get
+    @GetMapping("/redis/get")
+    public ResponseEntity<String> getRedis() {
+        Object val = redisTemplate.opsForValue().get("data");
+        if (val == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(val.toString());
     }
 
-    @GetMapping("/redis/{key}/{value}")
-    public String SetredisKeyValue(@PathVariable(value = "key") String key,
-            @PathVariable(value = "value") String value) {
+    // Set any key: GET /redis/set/{key}/{value}
+    @GetMapping("/redis/set/{key}/{value}")
+    public String setRedisKeyValue(@PathVariable String key, @PathVariable String value) {
         redisTemplate.opsForValue().set(key, value);
         return "set OK !";
     }
 
-    @GetMapping("/redis/{key}")
-    public String GetredisKey(@PathVariable(value = "key") String key) {
-        return redisTemplate.opsForValue().get(key).toString();
+    // Get any key: GET /redis/get/{key}
+    @GetMapping("/redis/get/{key}")
+    public ResponseEntity<String> getRedisKey(@PathVariable String key) {
+        Object val = redisTemplate.opsForValue().get(key);
+        if (val == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(val.toString());
     }
 
 }

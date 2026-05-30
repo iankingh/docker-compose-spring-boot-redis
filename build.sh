@@ -1,9 +1,11 @@
-cd spring-boot-redis 
+#!/bin/bash
+set -e
+
+cd spring-boot-redis
 
 ./mvnw clean package
 
-cp ./target/spring-boot-redis-0.0.1.war  ../tomcat/webapps/web.war
+cp ./target/spring-boot-redis-0.0.1.war ../tomcat/webapps/web.war
 
 cd ..
-
 

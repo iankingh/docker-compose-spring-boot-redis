@@ -1,2 +1,3 @@
 *.class
+target/
 /tomcat/webapps/*.war
