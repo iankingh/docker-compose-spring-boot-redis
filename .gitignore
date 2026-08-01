@@ -1,3 +1,13 @@
 *.class
 target/
 /tomcat/webapps/*.war
+
+### macOS ###
+.DS_Store
+
+### IDE ###
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
