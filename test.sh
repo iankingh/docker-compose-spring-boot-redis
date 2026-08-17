@@ -16,11 +16,19 @@ fi
 
 cd "$APP_DIR"
 echo "JAVA_HOME=${JAVA_HOME:-<unset>}"
-echo "java: $("${JAVA_HOME:-}"/bin/java -version 2>&1 | head -1)"
+if [ -n "${JAVA_HOME:-}" ]; then
+  JAVA_COMMAND="$JAVA_HOME/bin/java"
+else
+  JAVA_COMMAND="$(command -v java)"
+fi
+echo "java: $("$JAVA_COMMAND" -version 2>&1 | head -1)"
 
-GOAL="${*:-verify}"
-echo ">> ./mvnw $GOAL"
-./mvnw -B --no-transfer-progress "$GOAL"
+if [ "$#" -eq 0 ]; then
+  set -- verify
+fi
+
+echo ">> ./mvnw $*"
+./mvnw -B --no-transfer-progress "$@"
 
 if [ -f "$APP_DIR/target/site/jacoco/index.html" ]; then
   echo ""

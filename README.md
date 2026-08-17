@@ -26,7 +26,8 @@
 Compose 服務：
 
 - `web`：將主機的 `tomcat/webapps/` 掛載到 Tomcat，對外提供 `8080`
-- `redis`：Redis 資料存放於具名 volume `redis-data`，對外提供 `6379`
+- `redis`：Redis 資料存放於具名 volume `redis-data`，並只在主機 loopback
+  `127.0.0.1:6379` 提供連線
 
 WAR 會以 `tomcat/webapps/web.war` 部署，因此 HTTP context path 是 `/web`。
 
@@ -65,7 +66,7 @@ docker compose logs -f web redis
 
 | Method | Path | 說明 |
 | --- | --- | --- |
-| GET | `/web/hello` | 將 Redis key `hello` 的整數計數加一 |
+| GET | `/web/hello` | 以 Redis 原子遞增將 key `hello` 的整數計數加一 |
 | GET | `/web/redis/set/{value}` | 將 `value` 寫入固定 key `data` |
 | GET | `/web/redis/get` | 讀取固定 key `data`；不存在時回傳 404 |
 | GET | `/web/redis/set/{key}/{value}` | 寫入指定 key/value |
@@ -90,6 +91,9 @@ cd spring-boot-redis
 
 # 回到根目錄後，也可使用便利腳本
 ./test.sh
+
+# 多個 Maven goal／option 會逐一轉送
+./test.sh clean verify
 ```
 
 測試使用 MockMvc 與 mock `StringRedisTemplate` 驗證 API，並包含 Spring context
@@ -123,5 +127,5 @@ docker compose down
 docker compose down -v
 ```
 
-Compose 預設未設定 Redis 密碼。若要放到非本機環境，請先限制 `6379` 暴露範圍並
-加入適當的 Redis 認證與網路保護。
+Compose 預設未設定 Redis 密碼，因此 host port 僅綁定 loopback。若要放到非本機
+環境，請加入適當的 Redis 認證與網路保護，不要直接把 `6379` 發布到所有介面。

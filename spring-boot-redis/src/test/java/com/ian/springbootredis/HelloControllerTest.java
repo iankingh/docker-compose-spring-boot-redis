@@ -37,24 +37,24 @@ class HelloControllerTest {
 
     @Test
     void hello_firstCall_startsAtOne() throws Exception {
-        when(ops().get("hello")).thenReturn(null);
+        when(ops().increment("hello")).thenReturn(1L);
 
         mockMvc.perform(get("/hello"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("seen : 1 times")));
 
-        verify(valueOperations).set(eq("hello"), eq("1"));
+        verify(valueOperations).increment("hello");
     }
 
     @Test
     void hello_subsequentCall_increments() throws Exception {
-        when(ops().get("hello")).thenReturn("4");
+        when(ops().increment("hello")).thenReturn(5L);
 
         mockMvc.perform(get("/hello"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("seen : 5 times")));
 
-        verify(valueOperations).set(eq("hello"), eq("5"));
+        verify(valueOperations).increment("hello");
     }
 
     @Test

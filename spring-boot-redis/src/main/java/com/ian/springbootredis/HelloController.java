@@ -17,10 +17,8 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello() {
-        String s = redisTemplate.opsForValue().get("hello");
-        int i = (s == null) ? 1 : Integer.parseInt(s) + 1;
-        redisTemplate.opsForValue().set("hello", String.valueOf(i));
-        return "Hello World! I have been seen : " + i + " times";
+        Long count = redisTemplate.opsForValue().increment("hello");
+        return "Hello World! I have been seen : " + count + " times";
     }
 
     // Set the fixed "data" key: GET /redis/set/{value}
