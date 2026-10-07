@@ -1,18 +1,19 @@
 spring:
-  redis:
-    host: redis
-    port: 6379
-    password:
-    database: 0
-    # 連線超時時間
-    timeout: 500ms
-    lettuce:
-      pool:
-        # 連線池最大連線數（使用負值表示沒有限制）預設 8
-        max-active: 32
-        # 連線池最大阻塞等待時間（使用負值表示沒有限制）預設 -1
-        max-wait: -1ms
-        # 連線池中的最大空閒連線 預設 8
-        max-idle: 8
-        # 連線池中的最小空閒連線 預設 0
-        min-idle: 0
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password:
+      database: 0
+      # 連線超時時間
+      timeout: 500ms
+      lettuce:
+        pool:
+          # 連線池最大連線數（使用負值表示沒有限制）預設 8
+          max-active: 32
+          # 連線池最大阻塞等待時間（使用負值表示沒有限制）預設 -1
+          max-wait: -1ms
+          # 連線池中的最大空閒連線 預設 8
+          max-idle: 8
+          # 連線池中的最小空閒連線 預設 0
+          min-idle: 0

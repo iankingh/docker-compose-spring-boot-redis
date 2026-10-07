@@ -6,9 +6,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$ROOT_DIR/spring-boot-redis"
 
-# 優先使用 Java 11(pom 目標版本);找不到就退回 JAVA_HOME / 系統 java。
-if [ -z "${JAVA_HOME:-}" ] || ! "$JAVA_HOME/bin/java" -version 2>&1 | grep -q '"11'; then
-  DETECTED="$(/usr/libexec/java_home -v 11 2>/dev/null || true)"
+# 尊重指定的 JAVA_HOME；未指定時在 macOS 優先尋找 Java 17。
+if [ -z "${JAVA_HOME:-}" ] && [ -x /usr/libexec/java_home ]; then
+  DETECTED="$(/usr/libexec/java_home -v 17 2>/dev/null || true)"
   if [ -n "$DETECTED" ]; then
     export JAVA_HOME="$DETECTED"
   fi
